@@ -1,6 +1,6 @@
 class Food
 
-	def initialize(name, price)
+	def initialize(name, price = 4.95)
 		@name = name
 		@price = price
 	end
