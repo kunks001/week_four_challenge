@@ -1,4 +1,4 @@
-require './lib/inject'
+require 'inject'
 
 describe Array do
 
