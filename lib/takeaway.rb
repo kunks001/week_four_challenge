@@ -1,8 +1,12 @@
+require 'bundler/setup'
+require 'twilio-ruby'
+require_relative 'twilio_credentials'
+
 class Takeaway
 
 	def initialize(menu)
 		@menu = menu
-		@order = nil
+		# @order = nil
 	end
 
 	def menu
@@ -20,14 +24,16 @@ class Takeaway
 	def place_order(ordered_food, money)
 		order = ordered_food
 		order = check_order(order)
-		quantities = order_quantities(order)
+		quantities = check_order_quantities(order)
 		order = check_order_against_menu(order)
 		order = order.flatten
 
-		if order_price(order, quantities) == money
-			true
-		else
-			raise ArgumentError, "That\'s the wrong amount! Please try again"
+		argument_error if order_price(order, quantities) != money
+		send_confirmation
+	end
+
+	def argument_error
+		raise(ArgumentError, "That is the wrong amount! Please try again")
 	end
 
 	def check_order(order)
@@ -56,13 +62,12 @@ class Takeaway
 		order_matches_menu
 	end
 
-	def order_quantities(order)
+	def check_order_quantities(order)
 		order_quantities = []
-
+		
 		order.each do |dish|
 			order_quantities << dish[1]
 		end
-
 		order_quantities
 	end
 
@@ -82,4 +87,24 @@ class Takeaway
 		c
 	end
 
+	def send_confirmation
+		one_hour_from_now = (Time.now + 60 * 60).strftime("%H:%M")
+		order_confirmation = "Thank you! Your order was successfully " +
+    	"placed and will be delivered before #{one_hour_from_now}"
+    	send_sms(order_confirmation)
+	end
+
+	def twilio_client
+		account_sid = TwilioCredentials::TEST_ACCOUNT_SID
+		auth_token = TwilioCredentials::TEST_AUTH_TOKEN
+		twilio_client = Twilio::REST::Client.new(account_sid, auth_token)
+	end
+
+	def send_sms(order_confirmation)
+		twilio_client.account.sms.messages.create({
+			:from => TwilioCredentials::FROM_NUMBER,
+			:to => TwilioCredentials::TO_NUMBER,
+			:body => order_confirmation
+			})
+	end
 end
