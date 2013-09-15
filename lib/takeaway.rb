@@ -22,11 +22,9 @@ class Takeaway
 	end
 
 	def place_order(ordered_food, money)
-		order = ordered_food
-		order = check_order(order)
-		quantities = check_order_quantities(order)
-		order = check_order_against_menu(order)
-		order = order.flatten
+		read_order = check_order(ordered_food)
+		quantities = check_order_quantities(read_order)
+		order = check_order_against_menu(read_order)
 
 		argument_error if order_price(order, quantities) != money
 		send_confirmation
@@ -58,7 +56,7 @@ class Takeaway
 				ordered_dish[0] == menu_item.name
 			end
 		end
-		order_matches_menu
+		order_matches_menu.flatten
 	end
 
 	def check_order_quantities(order)
@@ -94,10 +92,9 @@ class Takeaway
 	end
 
 	def send_confirmation
-		one_hour_from_now = (Time.now + 60 * 60).strftime("%H:%M")
-		order_confirmation = "Thank you! Your order was successfully " +
-    	"placed and will be delivered before #{one_hour_from_now}"
-    	send_sms(order_confirmation)
+    one_hour_from_now = (Time.now + 60*60).strftime("%H:%M")
+	  order_confirmation = "Thank you! Your order was successfully placed and will be delivered before #{one_hour_from_now}"
+    send_sms(order_confirmation)
 	end
 
 	def twilio_client
