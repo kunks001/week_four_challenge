@@ -44,9 +44,6 @@ let(:food2) {double(:food, {name: "madras", price: 5})}
 
 		it 'with content' do
 			content = 'You have successfully placed your order'
-			# account = double(:account)
-			# sms = double(:sms)
-			# messages  = double(:messages)
 			takeaway.send_sms(content) do |message_hash|
 				expect(message_hash[:body]).to eq(content)
 			end
