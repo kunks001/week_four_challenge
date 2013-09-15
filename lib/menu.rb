@@ -8,6 +8,9 @@ class Menu
 		@food_items
 	end
 
-	def view_choices
-	end
+	# def view
+	# 	food_items.each do |food|
+	# 		print "#{food.name}, #{food.price}\n"
+	# 	end
+	# end
 end
