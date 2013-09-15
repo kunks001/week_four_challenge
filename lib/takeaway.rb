@@ -58,13 +58,12 @@ class Takeaway
 				ordered_dish[0] == menu_item.name
 			end
 		end
-
 		order_matches_menu
 	end
 
 	def check_order_quantities(order)
 		order_quantities = []
-		
+
 		order.each do |dish|
 			order_quantities << dish[1]
 		end
@@ -73,18 +72,25 @@ class Takeaway
 
 	def order_price(order, quantities)
 		food_price = order.map {|dish| dish.price}
+		price_per_item(food_price, quantities)
+	end
 
-		a, b = [], []
-		a << food_price
-		a << quantities
-		a = a.transpose
+	def price_per_item(food_price, quantities)
+		price_per_item = []
+		price_per_item = [food_price, quantities].transpose
+		calculate_order_total(price_per_item)
+	end
 
-		a.each do |dish|
-			b << dish[0]*dish[1]
+	def calculate_order_total(price_per_item)
+		total_per_item = []
+		price_per_item.each do |dish|
+			total_per_item << dish[0]*dish[1]
 		end
+		order_total(total_per_item)
+	end
 
-		c = b.inject {|sum, value| sum + value}
-		c
+	def order_total(total_per_item)
+		total_per_item.inject {|sum, value| sum + value}
 	end
 
 	def send_confirmation

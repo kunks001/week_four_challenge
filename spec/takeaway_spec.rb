@@ -54,19 +54,19 @@ let(:food2) {double(:food, {name: "madras", price: 5})}
   	context 'incorrect orders and' do
       it 'raise an error if the total is wrong' do
       	menu.stub_chain(:food_items, :select).and_return(food)
-        expect(takeaway.place_order('Korma 1', 10)).to raise_error(ArgumentError, "That is the wrong amount! Please try again")
+        expect(takeaway.place_order('Korma 1', 10)).to raise_error(ArgumentError)
       end
     end
 
     context 'correct orders and' do
 
-      it 'place them' do
+      it 'process them' do
         expect(takeaway).to receive(:send_sms).and_return true
         menu.stub_chain(:food_items, :select).and_return(food)
         expect(takeaway.place_order('korma, 1', 5)).to be_true
       end
 
-      it 'confirm the delivery time of one hour from now' do
+      it 'confirm the delivery' do
         	takeaway.send_confirmation do |message|
           	expect(message).to include "Thank you!"
         end
