@@ -1,4 +1,4 @@
-This repo contains my solution to a weekend challenge set by Enrique Reipenhausen during Week four of Makers Academy
+This repo contains my solution to a weekend challenge set by Enrique Riepenhausen and Alex Peattie during Week four of Makers Academy
 
 Task 1
 ------
