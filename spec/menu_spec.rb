@@ -16,13 +16,4 @@ let(:menu) {Menu.new([food])}
 	it 'should contain food prices' do
 		menu.food_items[0].price.should eq 4.95
 	end
-
-	# it 'should allow you to view the menu' do
-	# 	food.stub(:name).and_return("Korma")
-	# 	food.stub(:price).and_return(4.95)
-
-	# 	menu.view.should eq  "Korma, 4.95\n"
-	# end
-
-	### 'EACH' METHOD RETURNING OBJECT INSTEAD OF USING STUBBED METHODS?? 
 end
